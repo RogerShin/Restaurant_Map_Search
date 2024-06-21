@@ -4,6 +4,7 @@ total = a + b
 
 
 '''><'''
+'''><'''
 if total > 2:
     print("總數比2大")
 else:
