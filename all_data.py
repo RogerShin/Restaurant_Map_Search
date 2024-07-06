@@ -30,8 +30,10 @@ def input_address(address):
         raise ValueError("無效的地址")
     
     location = geocode_result[0]['geometry']['location']
-    location['lat']
-    return location['lat'], location['lng']
+    lat = location['lat']
+    lng = location['lng']
+    
+    return lat, lng
 
 # 定義一個格式化電話號碼的函數
 def format_phone_number(phone_number):
@@ -66,11 +68,11 @@ def price_web(price_level, website):
     return price_level, website
 
 # 獲取附近餐廳資料
-def get_nearby_restaurants(lat, lng, meter):
+def get_nearby_restaurants(lat, lng, meter=100):
     # 執行附近搜索
     nearby_results = gmaps.places_nearby(
         location = (lat, lng),
-        radius = 100,
+        radius = meter,
         keyword = 'restaurant',
         open_now = True,
         type = 'restaurant',
@@ -79,11 +81,9 @@ def get_nearby_restaurants(lat, lng, meter):
 
     # 創建一個空的列表來存儲餐廳信息
     restaurant_list = []
-    number = 0
 
     # 抓取每個餐廳的詳細資訊
     for place in nearby_results['results']:
-        number += 1
         place_id = place['place_id']
 
         # 獲取詳細信息
@@ -106,22 +106,15 @@ def get_nearby_restaurants(lat, lng, meter):
 
          # 創建一個字典來存儲餐廳的信息
         restaurant_info = {
-            '編號': number,
-            '名稱': name,
-            '評分': rating,
-            '評論數量': user_ratings_total,
-            '價位範圍': price_level,
-            '地址': address,
-            '電話號碼': phone_number,
-            '網站': website
+            'restaurant_name': name,
+            'rating': rating,
+            'user_ratings_total': user_ratings_total,
+            'price_level': price_level,
+            'address': address,
+            'phone_number': phone_number,
+            'website': website
         }
 
         restaurant_list.append(restaurant_info)
 
     return restaurant_list
-
-
-# address=input("地址:")
-# lat, lng= input_address(address)
-# restaurant = get_nearby_restaurants(lat, lng)
-# print(restaurant)
