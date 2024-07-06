@@ -2,7 +2,10 @@ from ttkthemes import ThemedTk
 import tkinter as tk
 from tkinter import ttk, messagebox
 import all_data
+import folium
 import os
+import time
+import tool
 os.system("clear")
 
 class Window(ThemedTk):
@@ -31,7 +34,7 @@ class Window(ThemedTk):
         tableFrame = ttk.Frame(self, borderwidth=1, relief='groove')
         columns = ('restaurant_name', 'rating', 'user_ratings_total', 'price_level', 'address', 'phone_number')
         # browse 只能單選
-        self.tree = ttk.Treeview(tableFrame, columns=columns, show='headings')
+        self.tree = ttk.Treeview(tableFrame, columns=columns, show='headings', selectmode='browse')
 
         # define headings
         self.tree.heading('restaurant_name', text='餐廳名稱')
@@ -66,6 +69,10 @@ class Window(ThemedTk):
         self.result_label.pack(pady=10)
         tableFrame.pack()
         self.tree.pack(fill=tk.BOTH, expand=True)
+
+        # 綁定Treeview點擊事件
+        self.tree.bind('<ButtonRelease-1>', self.on_tree_select)
+        
         
     def submit_address(self):
 
@@ -85,8 +92,8 @@ class Window(ThemedTk):
     
     def insert_data(self, restaurants):
         # 清除现有数据
-        for row in self.tree.get_children():
-            self.tree.delete(row)
+        for info in self.tree.get_children():
+            self.tree.delete(info)
 
         # 將餐廳資料寫入
         for restaurant in restaurants:
@@ -101,7 +108,40 @@ class Window(ThemedTk):
                 self.tree.insert('', tk.END, values=value)
                 print(restaurant)
 
+    def on_tree_select(self, event):
+        gmaps = all_data.gmaps
+        selected_item = self.tree.selection()[0]
+        restaurant_details = self.tree.item(selected_item, 'values')
+        address = restaurant_details[4]
+        geocode_result = gmaps.geocode(address)
+        if not geocode_result:
+            messagebox.showerror("錯誤", "無法獲取地理編碼，請檢查地址是否正確。")
+            return
+        
+        location = geocode_result[0]['geometry']['location']
+        lat, lng = location['lat'], location['lng']
+        print("經維度:", lat, lng)
 
+        map = folium.Map(location=[lat, lng], zoom_start=20)
+        restaurantname =restaurant_details[0]
+        folium.Marker([lat, lng], tooltip=restaurantname, popup=restaurantname).add_to(map)
+
+        # 保存地圖為 HTML 文件
+        map_file = "restaurant_location.html"
+        map.save(map_file) 
+
+        # 開啟電腦預設網頁
+        tool.open_map(map_file)
+
+        time.sleep(3)  # Adjust the sleep time as needed
+
+        # Delete the HTML file after opening it
+        if os.path.exists(map_file):
+            os.remove(map_file)
+            print(f"{map_file} has been deleted.")
+        else:
+            print(f"{map_file} does not exist.")
+        
 
 
 
