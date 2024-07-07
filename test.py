@@ -1,5 +1,6 @@
 import folium
 import os
+# import tool
 
 # lat = 25.108654
 # lng = 121.5250818
@@ -15,7 +16,7 @@ import os
 # map.save(filename) 
 
 # # 開啟電腦預設網頁
-# open_map(filename)
+# tool.open_map(filename)
 
 # import time
 # time.sleep(3)  # Adjust the sleep time as needed

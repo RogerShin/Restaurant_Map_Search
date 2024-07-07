@@ -36,10 +36,9 @@ def input_address(address):
 
 # 定義一個格式化電話號碼的函數
 def format_phone_number(phone_number):
-    
+
     if phone_number is None:
         phone_number = "未提供電話號碼"
-        return phone_number
     else:
         # 去掉空格
         phone_number = phone_number.replace(" ", "")
@@ -67,7 +66,8 @@ def price_web(price_level, website):
     return price_level, website
 
 # 獲取附近餐廳資料
-def get_nearby_restaurants(lat, lng, meter=100):
+def get_nearby_restaurants(lat, lng, meter):
+    print("距離",meter)
     # 執行附近搜索
     nearby_results = gmaps.places_nearby(
         location = (lat, lng),

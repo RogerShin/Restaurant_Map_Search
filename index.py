@@ -24,13 +24,18 @@ class Window(ThemedTk):
         # 輸入欄位
         self.entry_address = ttk.Entry(self)
         self.entry_address.focus()
+
+        # 數值調整滑桿
+        self.distance = tk.Scale(self, from_=100, to=3000, orient='horizontal',resolution=50, length=200)
+        self.distance.set(100)
+
         # 按鈕
         self.submit = ttk.Button(self, text="確認", command=self.submit_address)
 
         # 測試创建一个标签来显示输出结果
         self.result_label = ttk.Label(self, text="地址: ")
 
-        
+        # 數值滑桿
         tableFrame = ttk.Frame(self, borderwidth=1, relief='groove')
         columns = ('restaurant_name', 'rating', 'user_ratings_total', 'price_level', 'address', 'phone_number')
         # browse 只能單選
@@ -65,11 +70,12 @@ class Window(ThemedTk):
         
         self.select_county.pack()
         self.entry_address.pack()
+        self.distance.pack()
         self.submit.pack()
         self.result_label.pack(pady=10)
         tableFrame.pack()
         self.tree.pack(fill=tk.BOTH, expand=True)
-
+        
         # 綁定Treeview點擊事件
         self.tree.bind('<ButtonRelease-1>', self.on_tree_select)
         
@@ -78,13 +84,14 @@ class Window(ThemedTk):
 
         combobox_value = self.combobox_var.get()
         entry_value = self.entry_address.get().strip()
+        distance_value = int(self.distance.get())
         address = combobox_value + entry_value
 
         if not entry_value:
             messagebox.showwarning("輸入錯誤", "輸入不能為空白，請重新輸入。")
         else:
             lat, lng= all_data.input_address(address)
-            self.restaurants:list = all_data.get_nearby_restaurants(lat, lng)
+            self.restaurants:list = all_data.get_nearby_restaurants(lat, lng, distance_value)
             # 測試輸出
             self.result_label.config(text=f"地址: {address}")
             print("資料數",len(self.restaurants))
@@ -106,7 +113,6 @@ class Window(ThemedTk):
                           restaurant['website'],
                           )
                 self.tree.insert('', tk.END, values=value)
-                print(restaurant)
 
     def on_tree_select(self, event):
         gmaps = all_data.gmaps
@@ -120,7 +126,6 @@ class Window(ThemedTk):
         
         location = geocode_result[0]['geometry']['location']
         lat, lng = location['lat'], location['lng']
-        print("經維度:", lat, lng)
 
         map = folium.Map(location=[lat, lng], zoom_start=20)
         restaurantname =restaurant_details[0]
