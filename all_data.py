@@ -133,14 +133,15 @@ def get_nearby_restaurants(lat, lng, meter):
 
              # 創建一個字典來存儲餐廳的信息
             restaurant_info = {
-                '編號':N,
+                '編號': N,
                 'restaurant_name': name,
                 'rating': rating,
                 'user_ratings_total': user_ratings_total,
                 'price_level': price_level,
                 'address': address,
                 'phone_number': phone_number,
-                'website': website
+                'website': website,
+                'place_id': place_id
             }
 
             restaurant_list.append(restaurant_info)
