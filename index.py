@@ -6,7 +6,7 @@ import folium
 import os
 import time
 import tool
-os.system("clear")
+os.system("cls")
 
 class Window(ThemedTk):
     def __init__(self, theme:str='arc', **kwargs):
