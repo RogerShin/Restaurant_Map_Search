@@ -142,12 +142,11 @@ class Window(ThemedTk):
         
         place_id = restaurant_details[7]  # assuming place_id is at index 7 in restaurant_details
     
-        # Generate the Google Maps query URL
-        query = f"https://www.google.com/maps/search/?api=1&query={address}&query_place_id={place_id}"
+        # Google Maps query URL
+        URL = f"https://www.google.com/maps/search/?api=1&query={address}&query_place_id={place_id}"
         
-        # Open the query URL in the default web browser
-        webbrowser.open(query)
-
+        # 開啟預設瀏覽器
+        webbrowser.open(URL)
 
     def show_random_restaurant(self):
         
@@ -161,7 +160,6 @@ class Window(ThemedTk):
         
          # 標記為已打開隨機餐廳視窗
         self.random_window_open = True
-        
 
         # 隨機選擇一個餐廳
         random_restaurant = random.choice(self.restaurants)
