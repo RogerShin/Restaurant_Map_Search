@@ -35,8 +35,12 @@ class Window(ThemedTk):
         # 按鈕
         self.submit = ttk.Button(self, text="確認", command=self.submit_address)
 
+        # 清除輸入欄位按鈕
+        self.clear_button = ttk.Button(self, text="清除", command=self.clear_entry_and_treeview)
+
         # 顯示隨機餐廳的按鈕
         self.show_random_button = ttk.Button(self, text="顯示隨機餐廳", command=self.show_random_restaurant)
+        
 
         # 測試创建一个标签来显示输出结果
         self.result_label = ttk.Label(self, text="地址: ")
@@ -78,6 +82,7 @@ class Window(ThemedTk):
         self.entry_address.pack()
         self.distance.pack()
         self.submit.pack()
+        self.clear_button.pack()
         self.show_random_button.pack()
         self.result_label.pack(pady=10)
         tableFrame.pack()
@@ -151,7 +156,7 @@ class Window(ThemedTk):
             return
 
         if self.random_window_open:
-            messagebox.showinfo("提示", "隨機餐廳視窗已經開啟。")
+            messagebox.showwarning("提示", "隨機餐廳視窗已經開啟。")
             return
         
          # 標記為已打開隨機餐廳視窗
@@ -205,6 +210,13 @@ class Window(ThemedTk):
         window.destroy()
         # 標記隨機餐廳視窗已關閉
         self.random_window_open = False
+    
+    def clear_entry_and_treeview(self):
+        self.entry_address.delete(0, tk.END)
+
+        # 清除 Treeview 內容
+        for restaurant_info in self.tree.get_children():
+            self.tree.delete(restaurant_info)
 
 def main():
    window = Window()
