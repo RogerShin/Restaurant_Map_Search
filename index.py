@@ -17,7 +17,7 @@ class Window(ThemedTk):
         self.geometry('800x500')
         county:list = all_data.twn_county()
     
-        # 创建一个 StringVar 变量
+        # 創建 StringVar 物件
         self.combobox_var = tk.StringVar()
 
         # 下拉式選單
@@ -75,7 +75,6 @@ class Window(ThemedTk):
         v_scrollbar = ttk.Scrollbar(tableFrame, orient=tk.VERTICAL, command=self.tree.yview)
         v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        # 關聯 Treeview
         self.tree.configure(xscrollcommand=h_scrollbar.set, yscrollcommand=v_scrollbar.set)
         
         self.select_county.pack()
@@ -106,13 +105,15 @@ class Window(ThemedTk):
         else:
             lat, lng= all_data.input_address(address)
             self.restaurants:list = all_data.get_nearby_restaurants(lat, lng, distance_value)
+            self.insert_data(self.restaurants)
             # 測試輸出
             self.result_label.config(text=f"地址: {address}")
             print("資料數",len(self.restaurants))
-            self.insert_data(self.restaurants)
-    
+            
+    # 將資料寫入到treeview內
     def insert_data(self, restaurants):
-        # 清除现有数据
+
+        # 清除現有數據
         for info in self.tree.get_children():
             self.tree.delete(info)
 
@@ -130,12 +131,14 @@ class Window(ThemedTk):
                         )
                 self.tree.insert('', tk.END, values=value)
 
+    # treeview 事件, 點擊到的餐廳連接 Google Maps query URL 
     def on_tree_select(self, event):
         gmaps = all_data.gmaps
         selected_item = self.tree.selection()[0]
         restaurant_details = self.tree.item(selected_item, 'values')
         address = restaurant_details[4]
         geocode_result = gmaps.geocode(address)
+        
         if not geocode_result:
             messagebox.showerror("錯誤", "無法獲取地理編碼，請檢查地址是否正確。")
             return
