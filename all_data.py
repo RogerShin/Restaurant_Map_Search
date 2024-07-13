@@ -125,6 +125,11 @@ def get_nearby_restaurants(lat, lng, meter):
             price_level = place_details['result'].get('price_level')
             website = place_details['result'].get('website')
 
+            
+            # 獲取圖片的 URL
+            photo_reference = place.get('photos', [])[0].get('photo_reference', None)
+            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={os.environ['GOOGLEAPI_KEY']}" if photo_reference is not None else None 
+
             # 格式化電話號碼
             phone_number = format_phone_number(phone_number)
 
@@ -141,7 +146,8 @@ def get_nearby_restaurants(lat, lng, meter):
                 'address': address,
                 'phone_number': phone_number,
                 'website': website,
-                'place_id': place_id
+                'place_id': place_id,
+                'photo_url': photo_url
             }
 
             restaurant_list.append(restaurant_info)

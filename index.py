@@ -2,11 +2,14 @@ from ttkthemes import ThemedTk
 import tkinter as tk
 from tkinter import ttk, messagebox
 import all_data
-import folium
+import webbrowser
 import os
 import time
 import tool
-os.system("cls")
+import random
+from PIL import Image, ImageTk
+
+os.system("clear")
 
 class Window(ThemedTk):
     def __init__(self, theme:str='arc', **kwargs):
@@ -31,6 +34,9 @@ class Window(ThemedTk):
 
         # 按鈕
         self.submit = ttk.Button(self, text="確認", command=self.submit_address)
+
+        # 顯示隨機餐廳的按鈕
+        self.show_random_button = ttk.Button(self, text="顯示隨機餐廳", command=self.show_random_restaurant)
 
         # 測試创建一个标签来显示输出结果
         self.result_label = ttk.Label(self, text="地址: ")
@@ -72,13 +78,16 @@ class Window(ThemedTk):
         self.entry_address.pack()
         self.distance.pack()
         self.submit.pack()
+        self.show_random_button.pack()
         self.result_label.pack(pady=10)
         tableFrame.pack()
         self.tree.pack(fill=tk.BOTH, expand=True)
         
         # 綁定Treeview點擊事件
         self.tree.bind('<ButtonRelease-1>', self.on_tree_select)
-        
+
+        # 追蹤隨機餐廳視窗的狀態
+        self.random_window_open = False
         
     def submit_address(self):
 
@@ -111,7 +120,9 @@ class Window(ThemedTk):
                           restaurant['address'],
                           restaurant['phone_number'],
                           restaurant['website'],
-                          )
+                          restaurant['place_id'],
+                          restaurant['photo_url']
+                        )
                 self.tree.insert('', tk.END, values=value)
 
     def on_tree_select(self, event):
@@ -124,32 +135,76 @@ class Window(ThemedTk):
             messagebox.showerror("錯誤", "無法獲取地理編碼，請檢查地址是否正確。")
             return
         
-        location = geocode_result[0]['geometry']['location']
-        lat, lng = location['lat'], location['lng']
+        place_id = restaurant_details[7]  # assuming place_id is at index 7 in restaurant_details
+    
+        # Generate the Google Maps query URL
+        query = f"https://www.google.com/maps/search/?api=1&query={address}&query_place_id={place_id}"
+        
+        # Open the query URL in the default web browser
+        webbrowser.open(query)
 
-        map = folium.Map(location=[lat, lng], zoom_start=20)
-        restaurantname =restaurant_details[0]
-        folium.Marker([lat, lng], tooltip=restaurantname, popup=restaurantname).add_to(map)
 
-        # 保存地圖為 HTML 文件
-        map_file = "restaurant_location.html"
-        map.save(map_file) 
+    def show_random_restaurant(self):
+        
+        if not self.tree.get_children():
+            messagebox.showwarning("警告", "餐廳資料表格中沒有資料。")
+            return
 
-        # 開啟電腦預設網頁
-        tool.open_map(map_file)
-
-        time.sleep(3)  # Adjust the sleep time as needed
-
-        # Delete the HTML file after opening it
-        if os.path.exists(map_file):
-            os.remove(map_file)
-            print(f"{map_file} has been deleted.")
-        else:
-            print(f"{map_file} does not exist.")
+        if self.random_window_open:
+            messagebox.showinfo("提示", "隨機餐廳視窗已經開啟。")
+            return
+        
+         # 標記為已打開隨機餐廳視窗
+        self.random_window_open = True
         
 
+        # 隨機選擇一個餐廳
+        random_restaurant = random.choice(self.restaurants)
+        
+        # 創建一個新窗口來顯示餐廳資訊和圖片
+        new_window = tk.Toplevel(self)
+        new_window.title(random_restaurant['restaurant_name'])
 
+        # 抓取餐廳的照片的url
+        photo_url = random_restaurant['photo_url']
+        print(photo_url)
 
+        # 顯示照片
+        if photo_url:
+            try:
+                # 讀取url和顯示照片
+                image_byt = tool.get_image(photo_url)
+                image_b64 = tool.decode_image(image_byt)
+                image = Image.open(image_b64)
+                # image = image.resize((300, 300), Image.ANTIALIAS)
+                self.photo = ImageTk.PhotoImage(image)
+                image_label = tk.Label(new_window, image=self.photo)
+                image_label.pack()
+                # 監聽視窗關閉事件，標記隨機餐廳視窗已關閉
+                new_window.protocol("WM_DELETE_WINDOW", lambda: self.on_random_window_close(new_window))
+            except Exception as e:
+                error_label = ttk.Label(new_window, text="圖片加載失敗", justify=tk.LEFT, foreground="red")
+                error_label.pack()
+                # 監聽視窗關閉事件，標記隨機餐廳視窗已關閉
+                new_window.protocol("WM_DELETE_WINDOW", lambda: self.on_random_window_close(new_window))
+        
+        # 顯示餐廳資訊
+        info_text = f"餐廳名稱: {random_restaurant['restaurant_name']}\n"
+        info_text += f"評分: {random_restaurant['rating']}\n"
+        info_text += f"評論數: {random_restaurant['user_ratings_total']}\n"
+        info_text += f"消費金額: {random_restaurant['price_level']}\n"
+        info_text += f"地址: {random_restaurant['address']}\n"
+        info_text += f"電話: {random_restaurant['phone_number']}\n"
+        info_text += f"網站: {random_restaurant['website']}\n"
+        
+        info_label = ttk.Label(new_window, text=info_text, justify=tk.LEFT)
+        info_label.pack(pady=10)
+
+    def on_random_window_close(self, window):
+        # 視窗關閉時
+        window.destroy()
+        # 標記隨機餐廳視窗已關閉
+        self.random_window_open = False
 
 def main():
    window = Window()
