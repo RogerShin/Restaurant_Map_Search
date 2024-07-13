@@ -78,7 +78,7 @@ def price_web(price_level, website):
 
 # 獲取附近餐廳資料
 def get_nearby_restaurants(lat, lng, meter):
-    print("距離",meter)
+    
     # 創建一個空的列表來存儲餐廳信息
     restaurant_list = []
     N = 0

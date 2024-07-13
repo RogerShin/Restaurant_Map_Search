@@ -172,7 +172,6 @@ class Window(ThemedTk):
 
         # 抓取餐廳的照片的url
         photo_url = random_restaurant['photo_url']
-        print(photo_url)
 
         # 顯示照片
         if photo_url:
