@@ -14,7 +14,7 @@ os.system("clear")
 class Window(ThemedTk):
     def __init__(self, theme:str='arc', **kwargs):
         super().__init__(theme=theme, **kwargs)
-        self.geometry('800x300')
+        self.geometry('800x500')
         county:list = all_data.twn_county()
     
         # 创建一个 StringVar 变量

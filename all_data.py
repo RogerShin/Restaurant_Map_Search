@@ -78,7 +78,7 @@ def price_web(price_level, website):
 
 # 獲取附近餐廳資料
 def get_nearby_restaurants(lat, lng, meter):
-    
+
     # 創建一個空的列表來存儲餐廳信息
     restaurant_list = []
     N = 0
@@ -124,11 +124,17 @@ def get_nearby_restaurants(lat, lng, meter):
             user_ratings_total = place_details['result'].get('user_ratings_total')
             price_level = place_details['result'].get('price_level')
             website = place_details['result'].get('website')
-
-            
-            # 獲取圖片的 URL
-            photo_reference = place.get('photos', [])[0].get('photo_reference', None)
-            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={os.environ['GOOGLEAPI_KEY']}" if photo_reference is not None else None 
+   
+            # 獲取圖片的 URL            
+            photo_reference = place.get('photos', [])
+            if photo_reference:
+                photo_reference = photo_reference[0].get('photo_reference', None)
+                if photo_reference:
+                    photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={os.environ['GOOGLEAPI_KEY']}"
+                else:
+                    photo_url = None
+            else:
+                photo_url = None
 
             # 格式化電話號碼
             phone_number = format_phone_number(phone_number)
