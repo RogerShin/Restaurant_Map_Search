@@ -59,7 +59,7 @@ def format_phone_number(phone_number):
     return phone_number
 
 # 定義是否為None, 自設定為 “未提供”
-def price_web(price_level, website):
+def price_web_rating_user_ratings_total(price_level, website, rating, user_ratings_total):
     if price_level is None:
         price_level = "未提供價位範圍"
     elif price_level == 1:
@@ -73,8 +73,14 @@ def price_web(price_level, website):
 
     if website is None:
         website = "此餐廳無網頁"
+    
+    if rating is None:
+        rating = "此餐廳未有評分"
+        
+    if user_ratings_total is None:
+        user_ratings_total = "查無評論"
 
-    return price_level, website
+    return price_level, website, rating, user_ratings_total
 
 # 獲取附近餐廳資料
 def get_nearby_restaurants(lat, lng, meter):
@@ -139,7 +145,7 @@ def get_nearby_restaurants(lat, lng, meter):
             phone_number = format_phone_number(phone_number)
 
             # 檢查是否為None, 自設定為 未提供
-            price_level, website = price_web(price_level, website)
+            price_level, website, rating, user_ratings_total = price_web(price_level, website, rating, user_ratings_total)
 
              # 創建一個字典來存儲餐廳的信息
             restaurant_info = {
