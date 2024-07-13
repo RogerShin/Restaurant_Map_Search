@@ -4,7 +4,6 @@ from tkinter import ttk, messagebox
 import all_data
 import webbrowser
 import os
-import time
 import tool
 import random
 from PIL import Image, ImageTk
@@ -138,7 +137,7 @@ class Window(ThemedTk):
         restaurant_details = self.tree.item(selected_item, 'values')
         address = restaurant_details[4]
         geocode_result = gmaps.geocode(address)
-        
+
         if not geocode_result:
             messagebox.showerror("錯誤", "無法獲取地理編碼，請檢查地址是否正確。")
             return
