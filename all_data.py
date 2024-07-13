@@ -162,7 +162,7 @@ def get_nearby_restaurants(lat, lng, meter):
             break  
         
         # Google Places API 要求在發送下一個請求前等待一段時間
-        # 等待2秒後，請求下一頁
-        time.sleep(5)  
+        # 等待3秒後，請求下一頁
+        time.sleep(3)  
 
     return restaurant_list
