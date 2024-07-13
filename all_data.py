@@ -145,7 +145,7 @@ def get_nearby_restaurants(lat, lng, meter):
             phone_number = format_phone_number(phone_number)
 
             # 檢查是否為None, 自設定為 未提供
-            price_level, website, rating, user_ratings_total = price_web(price_level, website, rating, user_ratings_total)
+            price_level, website, rating, user_ratings_total = price_web_rating_user_ratings_total(price_level, website, rating, user_ratings_total)
 
              # 創建一個字典來存儲餐廳的信息
             restaurant_info = {
