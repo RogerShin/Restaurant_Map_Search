@@ -15,6 +15,13 @@ class Window(ThemedTk):
         super().__init__(theme=theme, **kwargs)
         self.geometry('800x500')
         county:list = all_data.twn_county()
+
+        # # 加入背景圖片(windows 系統看看後決定)
+        # image = Image.open("./images/foodbg.png")
+        # self.photo = ImageTk.PhotoImage(image)
+        # bg_label = ttk.Label(self, image=self.photo)
+        # bg_label.image = self.photo
+        # bg_label.place(x=0, y=0, relwidth=1, relheight=1)
     
         # 創建 StringVar 物件
         self.combobox_var = tk.StringVar()
