@@ -11,7 +11,7 @@ from PIL import Image, ImageTk
 os.system("clear")
 
 class Window(ThemedTk):
-    def __init__(self,theme="blue", **kwargs):
+    def __init__(self,theme="arc", **kwargs):
         super().__init__(theme=theme, **kwargs)
         self.title("今天要吃什麼")
         self.geometry('800x500')
@@ -103,21 +103,20 @@ class Window(ThemedTk):
 
         # pack & grid
         mainFrame.pack(ipadx=150, ipady=10)
-        city_label.grid(column=0, row=0, sticky="w", padx=(250,0), pady=(10, 5))
+        city_label.grid(column=0, row=0, sticky="w", padx=(200,0), pady=(10, 5))
         self.select_city.grid(column=1, row=0, sticky="w", padx=(10,0), pady=(10, 5))
-        address_label.grid(column=0, row=1, sticky="w", padx=(250,0), pady=(5, 5))
+        address_label.grid(column=0, row=1, sticky="w", padx=(200,0), pady=(5, 5))
         self.entry_address.grid(column=1, row=1, sticky="w", padx=(10,0), pady=(5, 5),)
-        distance_label.grid(column=0, row=2, sticky="w", padx=(250,0), pady=(5, 5))
+        distance_label.grid(column=0, row=2, sticky="w", padx=(200,0), pady=(5, 5))
         self.distance_scale.grid(column=1,row=2, sticky="w", padx=(10,0), pady=(5, 5))
         self.scale_value_label.grid(column=2,row=2, pady=(5, 5))
         m_lable.grid(column=3,row=2, pady=(5, 5))
-        self.clear_btn.grid(column=0,row=3, sticky="w", padx=(250,0), pady=(5, 5))
-        self.random_restaurant_btn.grid(column=1,row=3, pady=(5, 5))
-        self.search_btn.grid(column=2,row=3, sticky="e", padx=(30,0), pady=(5, 5))
+        self.clear_btn.grid(column=0,row=3, sticky="w", padx=(200,0), pady=(5, 5))
+        self.random_restaurant_btn.grid(column=1,row=3, padx=(10,0), pady=(5, 5))
+        self.search_btn.grid(column=2,row=3, sticky="e", padx=(10,0), pady=(5, 5))
 
         tableFrame.pack(fill="both", expand=True)
         self.tree.pack(fill="both", expand=True)
-        
         
     # 數值調整滑桿，加50 
     def update_distance_value(self, value):
