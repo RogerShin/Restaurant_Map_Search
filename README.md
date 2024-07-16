@@ -51,3 +51,24 @@
 
 * 顯示餐廳資料欄位包括：
 餐廳名稱 | 餐廳評分 | 評論數量 | 消費金額 | 餐廳地址 | 餐廳電話號碼
+
+---
+# 視窗介面
+![圖片1](main/images/img_1.png)
+
+---
+# 彈出警告視窗
+![圖片1](main/images/img_2.png)
+![圖片1](main/images/img_3.png)
+
+---
+# 查詢並顯示餐廳資料
+![圖片1](main/images/img_4.png)
+
+---
+# 隨機餐廳按鈕
+![圖片1](main/images/img_5.png)
+
+---
+# 點擊資料表內的餐廳，連接google map網頁
+![圖片1](main/images/img_6.png)

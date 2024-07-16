@@ -3,12 +3,9 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import modules.all_data as all_data
 import webbrowser
-import os
 import modules.tool as tool
 import random
 from PIL import Image, ImageTk
-
-os.system("clear")
 
 class Window(ThemedTk):
     def __init__(self,theme="arc", **kwargs):
@@ -28,13 +25,6 @@ class Window(ThemedTk):
     def widgets(self):
         mainFrame = ttk.Frame(borderwidth=1, relief='groove')
         county:list = all_data.twn_county()
-
-        # # 加入背景圖片(windows 系統看看後決定)
-        # image = Image.open("./images/foodbg.png")
-        # self.photo = ImageTk.PhotoImage(image)
-        # bg_label = ttk.Label(mainFrame, image=self.photo)
-        # bg_label.image = self.photo
-        # bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
         # 下拉式選單
         style = ttk.Style()
@@ -144,7 +134,7 @@ class Window(ThemedTk):
         address = combobox_value + entry_value
 
         if not entry_value:
-            messagebox.showwarning("輸入錯誤", "輸入不能為空白，請重新輸入。")
+            messagebox.showwarning("輸入錯誤", "地址欄位不能為空白，請重新輸入！")
         else:
             lat, lng= all_data.input_address(address)
             self.restaurants:list = all_data.get_nearby_restaurants(lat, lng, distance_value)
@@ -185,7 +175,7 @@ class Window(ThemedTk):
         geocode_result = gmaps.geocode(address)
 
         if not geocode_result:
-            messagebox.showerror("錯誤", "無法獲取地理編碼，請檢查地址是否正確。")
+            messagebox.showerror("錯誤", "無法獲取地理編碼，請檢查地址是否正確！")
             return
         
         place_id = restaurant_details[7]  # assuming place_id is at index 7 in restaurant_details
@@ -200,11 +190,11 @@ class Window(ThemedTk):
     def show_random_restaurant(self):
         
         if not self.tree.get_children():
-            messagebox.showwarning("警告", "餐廳資料表格中沒有資料。")
+            messagebox.showwarning("警告", "表格中沒有餐廳資料!  請重新查詢～")
             return
 
         if self.random_window_open:
-            messagebox.showwarning("提示", "隨機餐廳視窗已經開啟。")
+            messagebox.showwarning("提示", "隨機餐廳視窗已經開啟！")
             return
         
         # 標記為已打開隨機餐廳視窗
