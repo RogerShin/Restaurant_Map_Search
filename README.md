@@ -62,7 +62,7 @@
 ![圖片1](main/images/img_3.png)
 
 ---
-# 查詢並顯示餐廳資料
+# 資料表內顯示資料
 ![圖片1](main/images/img_4.png)
 
 ---
