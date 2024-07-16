@@ -98,7 +98,7 @@ def get_nearby_restaurants(lat, lng, meter):
 
     # 創建一個空的列表來存儲餐廳信息
     restaurant_list = []
-
+    restaurant_id = 0
     # 初始化下一頁標記為空
     next_page_token = None  
 
@@ -128,6 +128,7 @@ def get_nearby_restaurants(lat, lng, meter):
         # 抓取每個餐廳的詳細資訊
         for place in nearby_results['results']:
             place_id = place['place_id']
+            restaurant_id += 1
 
             # 獲取詳細信息
             place_details = gmaps.place(place_id=place_id, language='zh-TW')
@@ -160,6 +161,7 @@ def get_nearby_restaurants(lat, lng, meter):
 
              # 創建一個字典來存儲餐廳的信息
             restaurant_info = {
+                'restaurant_id': restaurant_id,
                 'restaurant_name': name,
                 'rating': rating,
                 'user_ratings_total': user_ratings_total,

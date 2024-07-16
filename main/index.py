@@ -59,11 +59,12 @@ class Window(ThemedTk):
         
         # 建立Treeview
         tableFrame = ttk.Frame(self, borderwidth=1, relief='groove')
-        columns = ('restaurant_name', 'rating', 'user_ratings_total', 'price_level', 'address', 'phone_number')
+        columns = ('restaurant_id', 'restaurant_name', 'rating', 'user_ratings_total', 'price_level', 'address', 'phone_number')
         # 設定成 browse(只能單選)
         self.tree = ttk.Treeview(tableFrame, columns=columns, show='headings', selectmode='browse')
 
         # define headings
+        self.tree.heading('restaurant_id', text='編號')
         self.tree.heading('restaurant_name', text='餐廳名稱')
         self.tree.heading('rating', text='餐廳評分')
         self.tree.heading('user_ratings_total', text='評論數')
@@ -72,6 +73,7 @@ class Window(ThemedTk):
         self.tree.heading('phone_number', text='電話')
 
         # 定義欄位寬度
+        self.tree.column('restaurant_id', width=100, anchor='center')
         self.tree.column('restaurant_name', minwidth=100, anchor='center')
         self.tree.column('rating', width=100, anchor='center')
         self.tree.column('user_ratings_total', width=100, anchor='center')
@@ -149,7 +151,8 @@ class Window(ThemedTk):
 
         # 將餐廳資料寫入
         for restaurant in restaurants:
-                value = (restaurant['restaurant_name'],
+                value = ( restaurant['restaurant_id'],
+                          restaurant['restaurant_name'],
                           restaurant['rating'],
                           restaurant['user_ratings_total'],
                           restaurant['price_level'],
@@ -159,6 +162,7 @@ class Window(ThemedTk):
                           restaurant['place_id'],
                           restaurant['photo_url']
                         )
+                
                 self.tree.insert('', tk.END, values=value)
 
     # treeview 事件, 點擊到的餐廳連接 Google Maps query URL 
@@ -171,14 +175,14 @@ class Window(ThemedTk):
         gmaps = all_data.gmaps
         selected_item = self.tree.selection()[0]
         restaurant_details = self.tree.item(selected_item, 'values')
-        address = restaurant_details[4]
+        address = restaurant_details[5]
         geocode_result = gmaps.geocode(address)
 
         if not geocode_result:
             messagebox.showerror("錯誤", "無法獲取地理編碼，請檢查地址是否正確！")
             return
         
-        place_id = restaurant_details[7]
+        place_id = restaurant_details[8]
     
         # Google Maps query URL
         URL = f"https://www.google.com/maps/search/?api=1&query={address}&query_place_id={place_id}"
@@ -235,12 +239,13 @@ class Window(ThemedTk):
         new_window_frame.columnconfigure(0, weight=1)
 
         ttk.Label(new_window_frame, text="餐廳資訊", font=("微軟正黑體", 20)).grid(column=0, row=0, sticky="n", pady=(10,0))
-        ttk.Label(new_window_frame, text=f"餐廳名稱: {random_restaurant['restaurant_name']}", font=("微軟正黑體", 16)).grid(column=0, row=1, sticky="w", padx=20, pady=(10, 5), ipadx=5)
-        ttk.Label(new_window_frame, text=f"評分: {random_restaurant['rating']}", font=("微軟正黑體", 16)).grid(column=0, row=2, sticky="w", padx=20, pady=(0, 5), ipadx=5)
-        ttk.Label(new_window_frame, text=f"評論數: {random_restaurant['user_ratings_total']}", font=("微軟正黑體", 16)).grid(column=0, row=3, sticky="w", padx=20, pady=(0, 5), ipadx=5)
-        ttk.Label(new_window_frame, text=f"消費金額: {random_restaurant['price_level']}", font=("微軟正黑體", 16)).grid(column=0, row=4, sticky="w", padx=20, pady=(0, 5), ipadx=5)
-        ttk.Label(new_window_frame, text=f"地址: {random_restaurant['address']}", font=("微軟正黑體", 16)).grid(column=0, row=5, sticky="w", padx=20, pady=(0, 5), ipadx=5)
-        ttk.Label(new_window_frame, text=f"電話: {random_restaurant['phone_number']}", font=("微軟正黑體", 16)).grid(column=0, row=6, sticky="w", padx=20, pady=(0, 20), ipadx=5)
+        ttk.Label(new_window_frame, text=f"編號: {random_restaurant['restaurant_id']}", font=("微軟正黑體", 16)).grid(column=0, row=1, sticky="w", padx=20, pady=(10, 5), ipadx=5)
+        ttk.Label(new_window_frame, text=f"餐廳名稱: {random_restaurant['restaurant_name']}", font=("微軟正黑體", 16)).grid(column=0, row=2, sticky="w", padx=20, pady=(0, 5), ipadx=5)
+        ttk.Label(new_window_frame, text=f"評分: {random_restaurant['rating']}", font=("微軟正黑體", 16)).grid(column=0, row=3, sticky="w", padx=20, pady=(0, 5), ipadx=5)
+        ttk.Label(new_window_frame, text=f"評論數: {random_restaurant['user_ratings_total']}", font=("微軟正黑體", 16)).grid(column=0, row=4, sticky="w", padx=20, pady=(0, 5), ipadx=5)
+        ttk.Label(new_window_frame, text=f"消費金額: {random_restaurant['price_level']}", font=("微軟正黑體", 16)).grid(column=0, row=5, sticky="w", padx=20, pady=(0, 5), ipadx=5)
+        ttk.Label(new_window_frame, text=f"地址: {random_restaurant['address']}", font=("微軟正黑體", 16)).grid(column=0, row=6, sticky="w", padx=20, pady=(0, 5), ipadx=5)
+        ttk.Label(new_window_frame, text=f"電話: {random_restaurant['phone_number']}", font=("微軟正黑體", 16)).grid(column=0, row=7, sticky="w", padx=20, pady=(0, 20), ipadx=5)
     
     # 事件關閉隨機餐廳視窗
     def random_window_close(self, new_window):
