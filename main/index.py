@@ -13,6 +13,7 @@ os.system("clear")
 class Window(ThemedTk):
     def __init__(self,theme="arc", **kwargs):
         super().__init__(theme=theme, **kwargs)
+        self.iconphoto(False, tk.PhotoImage(file = "./images/rest_and_map_icon.png"))
         self.title("今天要吃什麼")
         self.geometry('800x500')
         self.resizable(False, False)
