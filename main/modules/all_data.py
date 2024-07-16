@@ -11,7 +11,11 @@ gmaps = googlemaps.Client(key=os.environ['GOOGLEAPI_KEY'])
 
 # 抓台灣行政區資料
 def twn_county():
-    with open("countyname.json", "r", encoding="utf-8") as countyfile:
+    # 獲取當前文件所在的目錄
+    directory = os.path.dirname(os.path.abspath(__file__))
+    # 確保文件路徑正確
+    json_path = os.path.join(directory, "countyname.json")
+    with open(json_path, "r", encoding="utf-8") as countyfile:
         countyname_data = json.load(countyfile)
 
     county_list=[]

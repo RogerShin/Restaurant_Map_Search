@@ -1,10 +1,10 @@
 from ttkthemes import ThemedTk
 import tkinter as tk
 from tkinter import ttk, messagebox
-import all_data
+import modules.all_data as all_data
 import webbrowser
 import os
-import tool
+import modules.tool as tool
 import random
 from PIL import Image, ImageTk
 
