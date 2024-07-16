@@ -178,7 +178,7 @@ class Window(ThemedTk):
             messagebox.showerror("錯誤", "無法獲取地理編碼，請檢查地址是否正確！")
             return
         
-        place_id = restaurant_details[7]  # assuming place_id is at index 7 in restaurant_details
+        place_id = restaurant_details[7]
     
         # Google Maps query URL
         URL = f"https://www.google.com/maps/search/?api=1&query={address}&query_place_id={place_id}"
