@@ -14,9 +14,11 @@ class Window(ThemedTk):
         self.title("今天要吃什麼")
         self.geometry('800x500')
         self.resizable(False, False)
+        
         # 創建 StringVar 物件
         self.combobox_country= tk.StringVar()
         self.updating = False
+
         # 創建IntVar()物件
         self.update_value = tk.IntVar(value=100)
         self.widgets()
