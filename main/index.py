@@ -30,7 +30,7 @@ class Window(ThemedTk):
 
         # 下拉式選單
         style = ttk.Style()
-        style.configure("TCombobox", foreground="black")  # 設置 Combobox 字體顏色
+        style.configure("TCombobox", foreground="black")
         city_label = ttk.Label(mainFrame, text="請選擇(縣/市):") 
         self.select_city = ttk.Combobox(mainFrame, textvariable= self.combobox_country, values = county, state='readonly', width=18, style="TCombobox")
         # 初始值顯示台北市
