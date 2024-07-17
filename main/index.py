@@ -42,7 +42,7 @@ class Window(ThemedTk):
         self.entry_address.focus()
 
         # 距離範圍, 數值調整滑桿
-        distance_label = ttk.Label(mainFrame, text="調整收尋範圍:")
+        distance_label = ttk.Label(mainFrame, text="調整搜尋範圍:")
         self.distance_scale= ttk.Scale(mainFrame, from_=100, to=3000, orient='horizontal', length=186, command=self.update_distance_value)
         self.distance_scale.set(100)
         
@@ -211,6 +211,7 @@ class Window(ThemedTk):
         
         # 創建一個新窗口來顯示餐廳資訊和圖片
         new_window = tk.Toplevel(self)
+        new_window.iconphoto(False, tk.PhotoImage(file = "./images/rest_and_map_icon.png"))
         new_window.title(random_restaurant['restaurant_name'])
 
         # 抓取餐廳的照片的url
