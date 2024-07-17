@@ -58,16 +58,16 @@ def format_phone_number(phone_number):
     elif phone_number.startswith("0") and len(phone_number)==10:
         local_phone = re.match(r'^(\d{2})(\d{4})(\d{4})$', phone_number)
         if local_phone:
-            phone_number = f"{local_phone.group(1)}-{local_phone.group(2)}-{local_phone.group(3)}"
+            phone_number = f"({local_phone.group(1)}) {local_phone.group(2)}-{local_phone.group(3)}"
     elif phone_number.startswith("0") and len(phone_number)==9:
         local_phone = re.match(r'^(\d{2})(\d{3})(\d{4})$', phone_number)
         if local_phone:
-            phone_number = f"{local_phone.group(1)}-{local_phone.group(2)}-{local_phone.group(3)}"
+            phone_number = f"({local_phone.group(1)}) {local_phone.group(2)}-{local_phone.group(3)}"
     elif phone_number.startswith("0") and len(phone_number)>10:
          # #抓取後面的字
         special_number = re.match(r'^(\d{2})(\d{4})(\d{4})#(\d+)$', phone_number)
         if special_number:
-            phone_number = f"{special_number.group(1)}-{special_number.group(2)}-{special_number.group(3)} #{special_number.group(4)}"
+            phone_number = f"({special_number.group(1)}) {special_number.group(2)}-{special_number.group(3)} #{special_number.group(4)}"
     else:
         phone_number = "電話號碼格式有錯誤"
     
